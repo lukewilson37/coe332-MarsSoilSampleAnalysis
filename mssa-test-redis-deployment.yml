@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mssa-test-redis-deployment
+  name: mssa-test-redis
   labels:
     app: mssa-test-redis
     username: lew2547
@@ -26,9 +26,9 @@ spec:
           image: redis:6
           command:
           volumeMounts:
-          - name: mssa-test-redis-data
+          - name: mssa-test-redis-data-1
             mountPath: "/data"
       volumes:
-      - name: mssa-test-redis-data
+      - name: mssa-test-redis-data-1
         persistentVolumeClaim:
-          claimName: mssa-test-redis-data
+          claimName: mssa-test-redis-data-1
