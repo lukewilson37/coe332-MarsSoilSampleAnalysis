@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lew2547-test-flask
+  labels:
+    app: lew2547-test-flask
+    username: lew2547
+    env: test
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lew2547-test-flask
+  template:
+    metadata:
+      labels:
+        app: lew2547-test-flask
+        username: lew2547
+        env: test
+    spec:
+      containers:
+        - name: lew2547-test-flask
+          imagePullPolicy: Always
+          image: lukewilson37/lew2547-hw5-flask-redis:latest
+          env:
+          - name: FLASK_APP
+            value: "app.py"
+          ports:
+          - name: http
+            containerPort: 5037
