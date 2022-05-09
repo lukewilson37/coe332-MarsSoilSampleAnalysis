@@ -2,27 +2,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lew2547-test-flask
+  name: mssa-test-flask
   labels:
-    app: lew2547-test-flask
+    app: mssa-test-flask
     username: lew2547
     env: test
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: lew2547-test-flask
+      app: mssa-test-flask
   template:
     metadata:
       labels:
-        app: lew2547-test-flask
+        app: mssa-test-flask
         username: lew2547
         env: test
     spec:
       containers:
-        - name: lew2547-test-flask
+        - name: mssa-test-flask
           imagePullPolicy: Always
-          image: lukewilson37/lew2547-hw5-flask-redis:latest
+          image: lukewilson37/mssa-flask:1
           env:
           - name: FLASK_APP
             value: "app.py"
