@@ -2,16 +2,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: MSSA-test-redis-deployment
+  name: mssa-test-redis-deployment
   labels:
-    app: MSSA-test-redis
+    app: mssa-test-redis
     username: lew2547
     env: test
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: MSSA-test-redis
+      app: mssa-test-redis
       username: lew2547
       env: test
   template:
@@ -19,16 +19,16 @@ spec:
       labels:
         username: lew2547
         env: test
-        app: MSSA-test-redis
+        app: mssa-test-redis
     spec:
       containers:
         - name: redis-app
           image: redis:6
           command:
           volumeMounts:
-          - name: MSSA-test-redis-data
+          - name: mssa-test-redis-data
             mountPath: "/data"
       volumes:
-      - name: MSSA-test-redis-data
+      - name: mssa-test-redis-data
         persistentVolumeClaim:
-          claimName: MSSA-test-redis-data
+          claimName: mssa-test-redis-data
