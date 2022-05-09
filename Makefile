@@ -43,7 +43,7 @@ run_flask:
 	 docker run --name "${NAME}-flask" -d -p 5037:5000 ${NAME}/whereisiss-flask:latest
 	
 push:
-	docker push ${NAME}/whereisiss-flask:latest
+	docker push ${NAME}/${IMAGENAME}:${VERSION}
 
 gather:
 	curl -X POST localhost:5037/init

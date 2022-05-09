@@ -4,15 +4,17 @@ import requests
 import redis
 import json
 
+app = Flask(__name__)
+
 def get_redis_client():
-		"""
+	"""
 	Returns redis client object for use in flask app. Hard coded for TACC isp02 port 6379 and lew2547's unique host
 	Args:
 		none
 	Returns:
 		redis client object
 	"""
-	return redis.Redis(host='10.108.182.250', port=6379)
+	return redis.Redis(host='10.108.182.250',port=6379)
 
 @app.route('/',methods=['GET'])
 def hello_world():
@@ -37,11 +39,11 @@ def data_route():
 		sl_list.remove("")
 		for sol in sl_list:
 			sol_info_dict = {}
-			sos_info = requests.get("https://"+sol)
-			sol_info_list = list(sol_info.content.recode('utf-8').split("\r\n"))
-			for i in range(2,len(sol_info_list)):
+			sol_info = requests.get("https://"+sol)
+			sol_info_list = list(sol_info.content.decode('utf-8').split("\r\n"))
+			for i in range(1,len(sol_info_list)):
 				sol_info_list_i = sol_info_list[i].replace(" ","").split(",")
-				sol_info_dict[sol_info_list_i[1]] = sol_info_list[2]
+				sol_info_dict[sol_info_list_i[0]] = sol_info_list[1]
 			rd.set(sol[69:77],sol_info_dict)
 		return 'stored'
 	else:
