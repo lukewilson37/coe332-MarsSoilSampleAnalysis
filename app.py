@@ -14,7 +14,8 @@ def get_redis_client():
 	Returns:
 		redis client object
 	"""
-	return redis.StrictRedis(host='10.108.182.250',port=6379)
+	return redis.StrictRedis(host='10.108.182.250',port=6437)
+
 
 @app.route('/',methods=['GET'])
 def hello_world():
@@ -44,7 +45,7 @@ def data_route():
 			for i in range(1,len(sol_info_list)):
 				sol_info_list_i = sol_info_list[i].replace(" ","").split(",")
 				sol_info_dict[sol_info_list_i[0]] = sol_info_list[1]
-			rd.set(sol[69:77],sol_info_dict)
+			rd.set(sol[69:77],json.dumps(sol_info_dict))
 		return 'stored'
 	else:
 		rd = get_redis_client()
