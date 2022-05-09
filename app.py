@@ -14,7 +14,7 @@ def get_redis_client():
 	Returns:
 		redis client object
 	"""
-	return redis.Redis(host='10.108.182.250',port=6379)
+	return redis.StrictRedis(host='10.108.182.250',port=6379)
 
 @app.route('/',methods=['GET'])
 def hello_world():
