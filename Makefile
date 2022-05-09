@@ -1,7 +1,7 @@
 NAME ?= lukewilson37
 DOCKERNAME ?= mssa
 IMAGENAME ?= mssa-flask
-VERSON ?= 1
+VERSION ?= 1
 DOCKERFILE ?= dockerfile.api
 
 test: py_test build run clean
