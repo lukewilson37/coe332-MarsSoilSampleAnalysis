@@ -16,6 +16,7 @@ def get_redis_client():
 	"""
 	return redis.StrictRedis(host='10.108.182.250',port=6437)
 
+
 @app.route('/',methods=['GET'])
 def hello_world():
 	return 'Hello World\n'
