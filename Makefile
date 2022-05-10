@@ -4,6 +4,8 @@ IMAGENAME ?= mssa-flask
 VERSION ?= 1
 DOCKERFILE ?= dockerfile.api
 
+upddock: build push
+
 test: py_test build run clean
 
 init: build run gather
@@ -40,7 +42,7 @@ test:
 	curl localhost:5037/
 
 run_flask:
-	 docker run --name "${NAME}-flask" -d -p 5037:5000 ${NAME}/whereisiss-flask:latest
+	docker run --name "${NAME}-flask" -d -p 5037:5000 ${NAME}/whereisiss-flask:latest
 	
 push:
 	docker push ${NAME}/${IMAGENAME}:${VERSION}
