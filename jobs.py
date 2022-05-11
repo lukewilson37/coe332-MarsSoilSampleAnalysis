@@ -4,9 +4,9 @@ import uuid
 import os
 
 
-redis_ip = os.environ.get('REDIS_IP', '127.17.0.3')
-q = HotQueue("plot_queue", host=redis_ip, port=6379, db=1)
-rd = redis.StrictRedis(host=redis_ip, port=6379, db=0)
+q = HotQueue("plot_queue", host='10.108.182.250', port=6437, db=1)
+
+rd = redis.StrictRedis(host='10.108.182.250', port=6437, db=0)
 
 
 def generate_jid():

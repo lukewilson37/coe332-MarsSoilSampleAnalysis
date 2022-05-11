@@ -3,6 +3,8 @@ from flask import request
 import requests
 import redis
 import json
+from jobs import add_job,check_status
+
 
 app = Flask(__name__)
 
