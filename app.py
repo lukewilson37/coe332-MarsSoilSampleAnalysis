@@ -65,6 +65,28 @@ def get_sol_list():
 	rd = get_redis_client()
 	return "developing\n"	
 
+@app.route('/jobs/results/<id>', methods=['GET'])
+def job_results(id):
+    """
+    application route to return the results of a completed job.
+    :param id:
+    :return: histogram image produced by the worker
+    """
+    rd = get_redis_client()
+    path = f'/app/{id}.png'
+    with open(path, 'wb') as f:
+        f.write(rd.hget(str(id), 'image'))
+    return send_file(path, mimetype='image/png', as_attachment=True)
+
+@app.route('/jobs/<substance>', methods=['POST'])
+def job_creator(substance):
+    """
+    application route to create new job. This route accepts a substance input by the user in the URL
+    :param: substance
+    """
+    add_job(substance)
+    return add_job(substance)
+
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')
 
