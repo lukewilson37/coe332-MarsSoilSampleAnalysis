@@ -62,7 +62,7 @@ def return_sol_data(solname):
 	sol_data_json = json.loads(sol_data_raw)
 	return sol_data_raw
 
-@app.route('/get_sol_list',methods=['GET']
+@app.route('/get_sol_list',methods=['GET'])
 def get_sol_list():
 	rd = get_redis_client()
 	return "developing\n"	
@@ -86,7 +86,7 @@ def job_creator(substance):
     application route to create new job. This route accepts a substance input by the user in the URL
     :param: substance
     """
-    add_job(substance)
+    #add_job(substance)
     return add_job(substance)
 
 if __name__ == '__main__':

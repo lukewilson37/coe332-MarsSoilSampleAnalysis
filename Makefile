@@ -2,11 +2,15 @@ NAME ?= lukewilson37
 DOCKERNAME ?= mssa
 IMAGENAME ?= mssa-flask
 VERSION ?= 1
-DOCKERFILE ?= dockerfile.api
+DOCKERFILE ?= docker/dockerfile.api
 
 <<<<<<< HEAD
 =======
 upddock: build push
+
+wbp:
+	docker build -t ${NAME}/mssa-worker:${VERSION} -f docker/dockerfile.wrk .
+	docker push ${NAME}/mssa-worker:${VERSION}
 
 test: py_test build run clean
 

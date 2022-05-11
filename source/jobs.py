@@ -2,7 +2,7 @@ from hotqueue import HotQueue
 import redis
 import uuid
 import os
-
+import json
 
 q = HotQueue("plot_queue", host='10.108.182.250', port=6437, db=1)
 
@@ -18,7 +18,7 @@ def generate_jid():
 
 def save_job(jid, jobd):
     """Save a job in the Redis database."""
-    rd.hset(jid, jobd)
+    rd.set(jid, json.dumps(jobd))
 
 
 def queue_job(jid):
@@ -63,5 +63,8 @@ def update_status(jid, status):
     else:
         raise Exception()
 
+def check_status(jid):
+    job_dict = json.loads(rd.get(jid))
+    return job_dict['status']
 
 

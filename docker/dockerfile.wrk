@@ -1,0 +1,12 @@
+# image: lukewilson37/mssa-worker
+FROM python:3.9
+
+ADD source/requirements.txt /requirements.txt
+RUN pip install -r requirements.txt
+RUN mkdir /app
+COPY source /app
+WORKDIR /app
+
+ENTRYPOINT ["python"]
+# note the use of the -u option
+CMD ["-u", "worker.py"]
