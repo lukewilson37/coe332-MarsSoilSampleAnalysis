@@ -60,6 +60,11 @@ def return_sol_data(solname):
 	sol_data_json = json.loads(sol_data_raw)
 	return sol_data_raw
 
+@app.route('/get_sol_list',methods=['GET']
+def get_sol_list():
+	rd = get_redis_client()
+	return "developing\n"	
+
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')
 
