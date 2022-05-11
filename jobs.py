@@ -1,12 +1,12 @@
 from hotqueue import HotQueue
 import redis
 import uuid
-import os
+import json
 
 
-redis_ip = os.environ.get('REDIS_IP', '127.17.0.3')
-q = HotQueue("plot_queue", host=redis_ip, port=6379, db=1)
-rd = redis.StrictRedis(host=redis_ip, port=6379, db=0)
+q = HotQueue("plot_queue", serializer=None, host='172.17.0.5', port=6379, db=1)
+
+rd = redis.Redis(host="172.17.0.5", port=6379, db=0)
 
 
 def generate_jid():
@@ -16,9 +16,10 @@ def generate_jid():
     return str(uuid.uuid4())
 
 
+
 def save_job(jid, jobd):
     """Save a job in the Redis database."""
-    rd.hset(jid, jobd)
+    rd.set(jid, json.dumps(jobd))
 
 
 def queue_job(jid):
@@ -36,32 +37,31 @@ def instantiate_job(jid, substance, status):
     :param: substance - substance user wants data about
     :param: status - the status of the job
     """
-    if type(jid) == str:
-        return {'id': jid,
-                'substance': substance,
-                'status': status
-                }
-    return {'id': jid.decode('utf-8'),
-            'substance': substance.decode('utf-8'),
-            'status': status.decode('utf-8')
+    return {'id': jid,
+            'substance': substance,
+            'status': status
             }
 
 
 def add_job(substance, status="submitted"):
     jid = generate_jid()
-    jobd = instantiate_job(jid, status, substance)
+    jobd = instantiate_job(jid, str(substance), status)
     save_job(jid, jobd)
     queue_job(jid)
     return jobd
 
 
 def update_status(jid, status):
-    jobd = rd.hget(jid)
+    jobd = json.loads(rd.get(jid))
     if jobd:
         jobd['status'] = status
         save_job(jid, jobd)
     else:
         raise Exception()
 
+
+def check_status(jid):
+    job_dict = json.loads(rd.get(jid))
+    return job_dict['status']
 
 

@@ -1,49 +1,44 @@
-NAME ?= lukewilson37
-DOCKERNAME ?= mssa
-IMAGENAME ?= mssa-flask
-VERSION ?= 1
-DOCKERFILE ?= dockerfile.api
-
-test: py_test build run clean
-
-init: build run gather
-
-images:
-	docker images | grep ${NAME}
-
-ps:
-	docker ps -a | grep ${NAME}
-
-logs:
-	docker logs "${DOCKERNAME}"
-
-py_test:
-	pytest
-
-clean:
-	docker stop "${DOCKERNAME}"
-	docker rm "${DOCKERNAME}"
-
 build:
-	 docker build -t ${NAME}/${IMAGENAME}:${VERSION} -f ${DOCKERFILE} .
+	docker build -t alecsuggs/mssaapp:1.0.0 .
 
 run:
-	docker run --name "${DOCKERNAME}" -d -p 5037:5000 ${NAME}/${IMAGENAME}:${VERSION}
+	docker run --name "MSSAapp" -p 5033:5000 alecsuggs/mssaapp:1.0.0 /app/app.py
 
-postdata:
-	curl -X POST localhost:5037/data
+stop:
+	docker stop "MSSAapp"
 
-getdata:
-	curl localhost:5037/data
+image:
+	docker images | grep alecsuggs
 
-test:
-	curl localhost:5037/
+remove:
+	docker rm "MSSAapp"
 
-run_flask:
-	 docker run --name "${NAME}-flask" -d -p 5037:5000 ${NAME}/whereisiss-flask:latest
-	
-push:
-	docker push ${NAME}/${IMAGENAME}:${VERSION}
+pull:
+	docker pull alecsuggs/mssaapp:1.0.0
 
-gather:
-	curl -X POST localhost:5037/init
+removei:
+	docker rmi alecsuggs/mssaapp:1.0.0
+
+redis:
+	docker run -p 6433:6379 --name=mssaredis redis:6 
+
+bwrk:
+	docker build -t alecsuggs/mssawrk:1.0.0 .
+
+rwrk:
+	docker run --name "mssaworker" alecsuggs/mssawrk:1.0.0 /app/worker.py 
+
+rmwrk:
+	docker rm "mssaworker"
+
+stopw:
+	docker stop mssaworker
+
+redo:
+	make remove
+	make stopw
+	make rmwrk
+	make build
+	make bwrk
+	make run
+	make rwrk
