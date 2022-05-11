@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request
+from flask import request, send_file
 import requests
 import redis
 import json
@@ -87,7 +87,11 @@ def job_results(id):
     :param id:
     :return: histogram image produced by the worker
     """
-    return check_status(str(id))
+    rd = get_redis_client()
+    path = f'/app/{id}.png'
+    with open(path, 'wb') as f:
+        f.write(rd.hget(str(id), 'image'))
+    return send_file(path, mimetype='image/png', as_attachment=True)
 
 
 if __name__ == '__main__':

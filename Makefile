@@ -26,7 +26,7 @@ bwrk:
 	docker build -t alecsuggs/mssawrk:1.0.0 .
 
 rwrk:
-	docker run --name "mssaworker" alecsuggs/mssawrk:1.0.0 /app/worker.py 
+	docker run  --name "mssaworker" alecsuggs/mssawrk:1.0.0 /app/worker.py 
 
 rmwrk:
 	docker rm "mssaworker"
