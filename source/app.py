@@ -86,7 +86,7 @@ def job_creator(substance):
     application route to create new job. This route accepts a substance input by the user in the URL
     :param: substance
     """
-    add_job(substance)
+    #add_job(substance)
     return add_job(substance)
 
 if __name__ == '__main__':
