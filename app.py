@@ -3,6 +3,8 @@ from flask import request
 import requests
 import redis
 import json
+from jobs import add_job,check_status
+
 
 app = Flask(__name__)
 
@@ -42,15 +44,50 @@ def data_route():
 			sol_info_dict = {}
 			sol_info = requests.get("https://"+sol)
 			sol_info_list = list(sol_info.content.decode('utf-8').split("\r\n"))
+			sol_info_list.remove("")
 			for i in range(1,len(sol_info_list)):
 				sol_info_list_i = sol_info_list[i].replace(" ","").split(",")
-				sol_info_dict[sol_info_list_i[0]] = sol_info_list[1]
+				sol_info_dict[sol_info_list_i[0]] = sol_info_list_i[1]
 			rd.set(sol[69:77],json.dumps(sol_info_dict))
 		return 'stored'
 	else:
 		rd = get_redis_client()
 		sol_test = rd.get('sol00047')
 		return sol_test
+
+@app.route('/abundancies/<solname>',methods=['GET'])
+def return_sol_data(solname):
+	rd = get_redis_client()
+	sol_data_raw = rd.get(solname)
+	sol_data_json = json.loads(sol_data_raw)
+	return sol_data_raw
+
+@app.route('/get_sol_list',methods=['GET']
+def get_sol_list():
+	rd = get_redis_client()
+	return "developing\n"	
+
+@app.route('/jobs/results/<id>', methods=['GET'])
+def job_results(id):
+    """
+    application route to return the results of a completed job.
+    :param id:
+    :return: histogram image produced by the worker
+    """
+    rd = get_redis_client()
+    path = f'/app/{id}.png'
+    with open(path, 'wb') as f:
+        f.write(rd.hget(str(id), 'image'))
+    return send_file(path, mimetype='image/png', as_attachment=True)
+
+@app.route('/jobs/<substance>', methods=['POST'])
+def job_creator(substance):
+    """
+    application route to create new job. This route accepts a substance input by the user in the URL
+    :param: substance
+    """
+    add_job(substance)
+    return add_job(substance)
 
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')
