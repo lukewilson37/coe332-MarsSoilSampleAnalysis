@@ -49,14 +49,14 @@ def instantiate_job(jid, substance, status):
 
 def add_job(substance, status="submitted"):
     jid = generate_jid()
-    jobd = instantiate_job(jid, status, substance)
+    jobd = instantiate_job(jid, substance, status)
     save_job(jid, jobd)
     queue_job(jid)
     return jobd
 
 
 def update_status(jid, status):
-    jobd = rd.hget(jid)
+    jobd = json.loads(rd.get(jid))
     if jobd:
         jobd['status'] = status
         save_job(jid, jobd)
@@ -65,6 +65,6 @@ def update_status(jid, status):
 
 def check_status(jid):
     job_dict = json.loads(rd.get(jid))
-    return job_dict['status']
+    return job_dict['status'] + '\n'
 
 
