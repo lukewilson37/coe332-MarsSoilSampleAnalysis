@@ -1,5 +1,13 @@
 # Mars Soil Sample Analysis
 
+Alec Suggs
+
+Luke Wilson
+
+COE 332
+
+05/12/2022
+
 #### INTRO
 
 In 2011 NASA launched its Mars Science Labratory, otherwise know as Curiosity. Curiiosity was to go and study Mars soil and atmosphere.
@@ -23,4 +31,22 @@ $ ls pds-geosciences.wustl.edu/msl/msl-m-apxs-4_5-rdr-v1/mslapx_1xxx/data/sol0*/
 ```
 This needs to be run in the same directory as our ```app.py``` script, so that script can easily pull from the list.
 
-##
+## DEPLOYMENT TO KUBERNETES
+
+For our application database to be persistant with the ability to have python script workers running in the background we must use Kubernetes.
+To deploy out system onto kubernetes, we must first ssh into a computer running kubernetes. We can do that on tacc as below
+```bash
+$ ssh <tacc_username>@isp02.tacc.utexas.edu
+$ ssh <tacc_username>@coe332-k8s.tacc.cloud
+```
+Once we are here we can pull and deploy our system with:
+```bash 
+$ git clone https://github.com/lukewilson37/coe332-MarsSoilSampleAnalysis
+$ kubectl apply -f kubernetes/prod
+```
+This will deploy the kubernetes files in ```kubernetes/prod``` onto the system.
+
+
+
+
+
