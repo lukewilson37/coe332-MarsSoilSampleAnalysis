@@ -13,8 +13,8 @@ except KeyError:
 	print("REDIS_IP is required.")
 	sys.exit(1)
 
-#q = HotQueue('queue',host=REDIS_IP,port=6379,db=1)
-rd = redis.StrictRedis(host='10.108.182.250',port=6437)
+redis_ip = os.environ.get('REDIS_IP')
+rd = redis.Redis(host=redis_ip, port=6437, db=0)
 
 @q.worker
 def execute_job(jid):
