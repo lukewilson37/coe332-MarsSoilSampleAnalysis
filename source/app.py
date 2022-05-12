@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request
+from flask import request, send_file
 import requests
 import redis
 import json
@@ -18,11 +18,12 @@ def get_redis_client():
 	"""
 	return redis.StrictRedis(host='10.108.182.250',port=6437)
 
-
+# TEST ROUTE
 @app.route('/',methods=['GET'])
 def hello_world():
 	return 'Hello World\n'
 
+# INITIALIZE DATABASE
 @app.route('/data',methods=['GET','POST'])
 def data_route():
 	"""
@@ -49,19 +50,17 @@ def data_route():
 				sol_info_list_i = sol_info_list[i].replace(" ","").split(",")
 				sol_info_dict[sol_info_list_i[0]] = sol_info_list_i[1]
 			rd.set(sol[69:77],json.dumps(sol_info_dict))
+		template_sol = json.loads(rd.get(rd.keys(pattern="sol*")[0]))
+		for key in template_sol.keys():
+			template_sol[key] = 0
+		rd.set('template_sol',json.dumps(template_sol))
 		return 'stored'
 	else:
 		rd = get_redis_client()
 		sol_test = rd.get('sol00047')
 		return sol_test
 
-@app.route('/abundancies/<solname>',methods=['GET'])
-def return_sol_data(solname):
-	rd = get_redis_client()
-	sol_data_raw = rd.get(solname)
-	sol_data_json = json.loads(sol_data_raw)
-	return sol_data_raw
-
+# INITIALIZE/UPDATE LIST OF SOL_KEYS
 @app.route('/set_sol_list',methods=['GET'])
 def get_sol_list():
 	rd = get_redis_client()
@@ -69,21 +68,66 @@ def get_sol_list():
 	for sol_key in rd.keys(pattern="sol*"):
 		keys_sol.append(sol_key.decode('utf-8'))
 	rd.set('keys_sol',json.dumps({'keys_sol':keys_sol}))
-	return "developing\n"	
+	return "sol list updated\n"
 
-@app.route('/jobs/results/<id>', methods=['GET'])
-def job_results(id):
+### CRUD OPERATIONS ---------------------------------------------------------------------
+
+# CREATE EMPTY SOL
+@app.route('/create/<sol_key>')
+def create_empty_sol_route(sol_key):
+	rd = get_redis_client()
+	rd.set(sol_key,rd.get('template_sol'))
+	return str(sol_key) + ' created!\n'
+
+# READ SOL DATA
+@app.route('/read/<solname>',methods=['GET'])
+def return_sol_data(solname):
+	rd = get_redis_client()
+	sol_data_raw = rd.get(solname)
+	sol_data_json = json.loads(sol_data_raw)
+	return sol_data_json
+
+# UPDATE SOL DATA
+@app.route('/update/<sol_key>/<element>/<value>',methods=['POST'])
+def update_sol_data_route(sol_key,element,value):
+	rd = get_redis_client()
+	sol_dict = json.loads(rd.get(sol_key))
+	sol_dict[element] = value
+	rd.set(sol_key,json.dumps(sol_dict))
+	return sol_key + ' updated!'
+	
+
+# DELETE SOL FROM DATABASE
+@app.route('/delete/<sol>',methods=['POST'])
+def delete_sol_route(sol):
+	"""
+	application route to delete a key.
+	arguments: key value (str)
+	return: success or failure (str)
+	"""
+	rd = get_redis_client()
+	if not rd.get(sol):
+		return "key does not exist\n"
+	rd.delete(sol)
+	return "key successfully removed\n"
+
+### JOB ROUTES -------------------------------------------------------------
+
+# RETURN RESULTS ROUTE
+@app.route('/jobs/results/<jid>', methods=['GET'])
+def job_results(jid):
     """
     application route to return the results of a completed job.
     :param id:
     :return: histogram image produced by the worker
     """
     rd = get_redis_client()
-    path = f'/app/{id}.png'
+    path = f'/app/' + str(jid) + '.png'
     with open(path, 'wb') as f:
-        f.write(rd.hget(str(id), 'image'))
+        f.write(rd.hget(str(jid)+'_plot', 'image'))
     return send_file(path, mimetype='image/png', as_attachment=True)
 
+# REQUEST JOB ROUTE
 @app.route('/jobs/<substance>', methods=['POST'])
 def job_creator(substance):
     """
@@ -93,19 +137,7 @@ def job_creator(substance):
     #add_job(substance)
     return add_job(substance)
 
-<<<<<<< HEAD
-@app.route('/delete/<sol>',methods=['POST'])
-def delete_sol_route(sol):
-	"""
-	application route to delete a key.
-	arguments: key value (str)
-	return: success or failure (str)
-	"""
-	if not rd.get(sol):
-		return "key does not exist\n"
-	rd.remove(sol)
-	return "key successfully removed\n"
-=======
+# RETURN JOB STATUS
 @app.route('/jobs/status/<job_id>',methods=['GET'])
 def check_status_route(job_id):
 	"""
@@ -114,7 +146,6 @@ def check_status_route(job_id):
 	returns: status (string)
 	"""
 	return check_status(job_id)
->>>>>>> 2a8e9d60eb8bb02b4d130faefeb5a983f35a8762
 
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')
