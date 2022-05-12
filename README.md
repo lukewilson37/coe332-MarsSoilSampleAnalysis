@@ -1,14 +1,10 @@
 # Mars Soil Sample Analysis
 
-Alec Suggs
-
-Luke Wilson
-
-COE 332
+By Alec Suggs and Luke Wilson
 
 05/12/2022
 
-#### INTRO
+### INTRO
 
 In 2011 NASA launched its Mars Science Labratory, otherwise know as Curiosity. Curiiosity was to go and study Mars soil and atmosphere.
 One of the Instruments attatched to Curiosity was the Alpha Particle X-Ray Spectrometer ([APXS](https://mars.nasa.gov/msl/spacecraft/instruments/apxs/)). 
