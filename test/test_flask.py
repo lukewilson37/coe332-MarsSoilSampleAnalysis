@@ -12,3 +12,5 @@ def test_flask_running():
 def test_redis_database():
 	rd = redis.StrictRedis(host=REDIS_IP,port=REDIS_PORT)
 	assert len(rd.keys()) > 0
+
+def test_
