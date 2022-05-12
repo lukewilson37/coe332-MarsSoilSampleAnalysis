@@ -21,7 +21,7 @@ def get_redis_client():
 # TEST ROUTE
 @app.route('/',methods=['GET'])
 def hello_world():
-	return 'Hello World\n'
+	return 'Welcome to Mars Soil Sample Analysis Application\n'
 
 # INITIALIZE DATABASE
 @app.route('/data',methods=['GET','POST'])
@@ -38,7 +38,7 @@ def data_route():
 	"""
 	if request.method == 'POST':
 		rd = get_redis_client()
-		sl = requests.get("https://raw.githubusercontent.com/lukewilson37/coe332-MarsSoilSampleAnalysis/main/initial_sol_list.txt")
+		sl = requests.get("https://raw.githubusercontent.com/lukewilson37/coe332-MarsSoilSampleAnalysis/main/source/initial_sol_list.txt")
 		sl_list = list(sl.content.decode('utf-8').split("\n"))
 		sl_list.remove("")
 		for sol in sl_list:
@@ -63,6 +63,9 @@ def data_route():
 # INITIALIZE/UPDATE LIST OF SOL_KEYS
 @app.route('/set_sol_list',methods=['GET'])
 def get_sol_list():
+	"""
+	This route generates and updates the list of sol values, such that they are iterable for future use.
+	"""
 	rd = get_redis_client()
 	keys_sol = []
 	for sol_key in rd.keys(pattern="sol*"):
@@ -73,28 +76,51 @@ def get_sol_list():
 ### CRUD OPERATIONS ---------------------------------------------------------------------
 
 # CREATE EMPTY SOL
-@app.route('/create/<sol_key>')
+@app.route('/create/<sol_key>',methods=['POST'])
 def create_empty_sol_route(sol_key):
+	"""
+	This route creates an empty sol data sample. Dictionary Template is provided and percentages are preset to zero
+	"""
 	rd = get_redis_client()
+	if rd.get(sol_key):
+		return 'sol already exists.\n'
 	rd.set(sol_key,rd.get('template_sol'))
 	return str(sol_key) + ' created!\n'
 
 # READ SOL DATA
-@app.route('/read/<solname>',methods=['GET'])
-def return_sol_data(solname):
+@app.route('/read/<sol_key>',methods=['GET'])
+def return_sol_data(sol_key):
+	""" 
+	This route prints the data from the requested sol sample.
+	Args: sol_key (string)
+	Returns: associates sol data (json dictionary)
+	"""
 	rd = get_redis_client()
-	sol_data_raw = rd.get(solname)
+	if not rd.get(sol_key):
+		return 'key does not exist.\n'
+	sol_data_raw = rd.get(sol_key)
 	sol_data_json = json.loads(sol_data_raw)
 	return sol_data_json
 
 # UPDATE SOL DATA
 @app.route('/update/<sol_key>/<element>/<value>',methods=['POST'])
 def update_sol_data_route(sol_key,element,value):
+	"""
+	This route updated a value in a sol sample's data.
+	Args:
+		sol_key (str)
+		element (str)
+		value (float)
+	Returns
+		confirmation message
+	"""
 	rd = get_redis_client()
+	if not rd.get(sol_key):
+		return 'key does not exist.\n'
 	sol_dict = json.loads(rd.get(sol_key))
-	sol_dict[element] = value
+	sol_dict[element] = float(value)
 	rd.set(sol_key,json.dumps(sol_dict))
-	return sol_key + ' updated!'
+	return sol_key + ' updated!\n'
 	
 
 # DELETE SOL FROM DATABASE
@@ -128,7 +154,7 @@ def job_results(jid):
     return send_file(path, mimetype='image/png', as_attachment=True)
 
 # REQUEST JOB ROUTE
-@app.route('/jobs/<substance>', methods=['POST'])
+@app.route('/jobs/request/<substance>', methods=['POST'])
 def job_creator(substance):
     """
     application route to create new job. This route accepts a substance input by the user in the URL
