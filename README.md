@@ -137,7 +137,7 @@ The jobs typically finishes pretty quickly. When we find that our job is complet
 Since the results are in the form of a histogram, we must specify a location for out image to be saved. 
 The command thus looks something like:
 ```bash
-$ curl -X POST <IP_ADDRESS>:<PORT>/jobs/results/<job_id> -- output <destination>
+$ curl -X POST <IP_ADDRESS>:<PORT>/jobs/results/<job_id> --output <destination>
 ```
 This saved the image to our destination. You will find the typical histogram looks like this ![histogram](https://github.com/lukewilson37/coe332-MarsSoilSampleAnalysis/blob/main/test.png)
 
