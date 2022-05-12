@@ -6,6 +6,7 @@ import json
 import redis
 import numpy as np
 import matplotlib.pyplot as plt
+
 try:
 	REDIS_IP = os.environ['REDIS_IP']
 except KeyError:
