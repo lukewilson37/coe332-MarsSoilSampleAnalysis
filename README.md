@@ -61,11 +61,57 @@ Now our application in fully on kubernetes!
 ## CRUD OPERATIONS
 
 CRUD stands for Create, Read, Update and Delete. Our application offers all of there features!
-Let us begin with create. We can run 
+Let us begin with read. We can run 
 ```bash
 $ kubectl get service
 ```
-again to find our flask IP address and port. Once these
+again to find our flask IP address and port. Once these are obtained we can interact with our application using curl commands.
+Note you may need to deploy and enter a python debugger pod on kubernetes to curl the address.
+To read a samples data, we need to know the sol number, a 5 digit number indicating the day of the observation.
+In our curl command we lew ```sol_key = 'sol<sol_number'```. Thus we read that sol with
+```bash
+$ curl <IP_ADDRESS>:<PORT>/read/<sol_key>
+```
+This returns a dictionary structure showing the perctage of each element within the sample. The output will look something like
+```bash
+{
+  "Al2O3": "9.56", 
+  "Br": "0.0032", 
+  "CaO": "7.38", 
+  "Cl": "0.61", 
+  "Cr2O3": "0.42", 
+  "FeO": "21", 
+  "K2O": "0.59", 
+  "MgO": "6.53", 
+  "MnO": "0.44", 
+  "Na2O": "2.22", 
+  "Ni": "0.0311", 
+  "P2O5": "0.53", 
+  "SO3": "5.18", 
+  "SiO2": "43.7", 
+  "TiO2": "1.54", 
+  "Zn": "0.0269"
+}
+```
+with elements as keys and perctages as values to the dictionary.
+We can now begin with creating. We can create a sample or sol using
+```bash
+$ curl -X GET <IP_ADDRESS>:<PORT>/create/<sol_key>
+```
+This will create an empty sol whose percentages are zero for every element. 
+Since our element data is empty, we might now wish to define some percentages. The general formula is to 
+```bash
+$ curl -X POST <IP_ADDRESS>:<PORT>/update/<sol_key>/<element>/<value>
+```
+This will update the value associated with the element in the sol's dictionary.
+To delete a sol, we similary run
+```bash
+$ curl -X POST <IP_ADDRESS>:<PORT>/delete/<sol_key>
+```
+If we now try to read the sol, we will get a "does not exist" message. the data is gone from teh database.
+
+## JOB OPERATIONS 
+
 
 
 
