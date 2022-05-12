@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request
+from flask import request, send_file
 import requests
 import redis
 import json
@@ -55,6 +55,10 @@ def data_route():
 		sol_test = rd.get('sol00047')
 		return sol_test
 
+#@app.route('/create_sol_template',methods=['POST'])
+
+#@app.route('/create/<sol_key>/')
+	
 @app.route('/abundancies/<solname>',methods=['GET'])
 def return_sol_data(solname):
 	rd = get_redis_client()
@@ -71,17 +75,17 @@ def get_sol_list():
 	rd.set('keys_sol',json.dumps({'keys_sol':keys_sol}))
 	return "developing\n"	
 
-@app.route('/jobs/results/<id>', methods=['GET'])
-def job_results(id):
+@app.route('/jobs/results/<jid>', methods=['GET'])
+def job_results(jid):
     """
     application route to return the results of a completed job.
     :param id:
     :return: histogram image produced by the worker
     """
     rd = get_redis_client()
-    path = f'/app/{id}.png'
+    path = f'/app/' + str(jid) + '.png'
     with open(path, 'wb') as f:
-        f.write(rd.hget(str(id), 'image'))
+        f.write(rd.hget(str(jid)+'_plot', 'image'))
     return send_file(path, mimetype='image/png', as_attachment=True)
 
 @app.route('/jobs/<substance>', methods=['POST'])
@@ -93,7 +97,6 @@ def job_creator(substance):
     #add_job(substance)
     return add_job(substance)
 
-<<<<<<< HEAD
 @app.route('/delete/<sol>',methods=['POST'])
 def delete_sol_route(sol):
 	"""
@@ -105,7 +108,7 @@ def delete_sol_route(sol):
 		return "key does not exist\n"
 	rd.remove(sol)
 	return "key successfully removed\n"
-=======
+
 @app.route('/jobs/status/<job_id>',methods=['GET'])
 def check_status_route(job_id):
 	"""
@@ -114,7 +117,6 @@ def check_status_route(job_id):
 	returns: status (string)
 	"""
 	return check_status(job_id)
->>>>>>> 2a8e9d60eb8bb02b4d130faefeb5a983f35a8762
 
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')
