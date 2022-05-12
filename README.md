@@ -38,11 +38,34 @@ $ ssh <tacc_username>@coe332-k8s.tacc.cloud
 Once we are here we can pull and deploy our system with:
 ```bash 
 $ git clone https://github.com/lukewilson37/coe332-MarsSoilSampleAnalysis
-$ kubectl apply -f kubernetes/prod
+$ kubectl apply -f kubernetes/prod/mssa-prod-redis-pvc.yml
+$ kubectl apply -f kubernetes/prod/mssa-prod-redis-deployment.yml
+$ kubectl apply -f kubernetes/prod/mssa-prod-redis-service.yml
 ```
-This will deploy the kubernetes files in ```kubernetes/prod``` onto the system.
+This will deploy the redis database onto the system. Once we have our database, we find out redis service address with:
+```bash
+$ kubectl get service
+```
+Here we find the IP address for our redis service. We copy that address into our flask ```.yml``` files.
+```yaml
+		env:
+          - name: REDIS_IP
+            value: 10.108.182.25
+```
+Now we are ready to deploy the flask application. We can do this more simply with
+```bash
+$ kubectl apply -f kubernete/prod/
+```
+Now our application in fully on kubernetes!
 
+## CRUD OPERATIONS
 
+CRUD stands for Create, Read, Update and Delete. Our application offers all of there features!
+Let us begin with create. We can run 
+```bash
+$ kubectl get service
+```
+again to find our flask IP address and port. Once these
 
 
 

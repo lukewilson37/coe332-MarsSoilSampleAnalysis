@@ -1,5 +1,5 @@
 import pytest, requests
-import redis
+import redis, json
 
 REDIS_IP = '10.108.182.250'
 REDIS_PORT = 6437
