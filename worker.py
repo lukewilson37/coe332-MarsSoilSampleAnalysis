@@ -31,6 +31,9 @@ def execute_job(jid):
     hi = np.asarray(percentage_list)
     rd.set('plist', json.dumps({'plist': percentage_list}))
     plt.hist(hi, bins=19)
+    plt.xlabel("Composition Percentage")
+    plt.ylabel("Number of Samples")
+    plt.title(f'{substance} Composition Percentages')
     plt.savefig('concentration.png')
     with open('concentration.png', 'rb') as f:
         img = f.read()
