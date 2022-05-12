@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssa-test-worker
+  labels:
+    app: mssa-test-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mssa-test-worker
+  template:
+    metadata:
+      labels:
+        app: mssa-test-worker
+    spec:
+      containers:
+        - name: mssa-test-worker 
+          imagePullPolicy: Always
+          image: lukewilson37/mssa-worker:1
+          command: 
+          env:
+          - name: REDIS_IP
+            value: 10.108.182.250
+
+

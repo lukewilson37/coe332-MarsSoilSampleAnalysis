@@ -1,4 +1,4 @@
-from jobs import q,rd, update_status
+from jobs import q, update_status
 from hotqueue import HotQueue
 import sys
 import os
@@ -14,7 +14,7 @@ except KeyError:
 	sys.exit(1)
 
 #q = HotQueue('queue',host=REDIS_IP,port=6379,db=1)
-#rd = redis.StrictRedis(host='10.108.182.250',port=6437)
+rd = redis.StrictRedis(host='10.108.182.250',port=6437)
 
 @q.worker
 def execute_job(jid):

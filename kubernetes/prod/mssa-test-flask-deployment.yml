@@ -1,0 +1,33 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mssa-test-flask
+  labels:
+    app: mssa-test-flask
+    username: lew2547
+    env: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mssa-test-flask
+  template:
+    metadata:
+      labels:
+        app: mssa-test-flask
+        username: lew2547
+        env: test
+    spec:
+      containers:
+        - name: mssa-test-flask
+          imagePullPolicy: Always
+          image: lukewilson37/mssa-flask:1
+          env:
+          - name: FLASK_APP
+            value: "app.py"
+          - name: REDIS_IP
+            value: 10.108.182.25
+          ports:
+          - name: http
+            containerPort: 5037
