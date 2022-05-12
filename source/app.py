@@ -89,7 +89,19 @@ def job_creator(substance):
     #add_job(substance)
     return add_job(substance)
 
+@app.route('/delete/<sol>',methods=['POST'])
+def delete_sol_route(sol):
+	"""
+	application route to delete a key.
+	arguments: key value (str)
+	return: success or failure (str)
+	"""
+	if not rd.get(sol):
+		return "key does not exist\n"
+	rd.remove(sol)
+	return "key successfully removed\n"
+
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')
-
+	
 
