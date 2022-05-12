@@ -73,9 +73,9 @@ def get_sol_list():
 ### CRUD OPERATIONS ---------------------------------------------------------------------
 
 # CREATE EMPTY SOL
-@app.route('/create/<sol_key>/')
+@app.route('/create/<sol_key>')
 def create_empty_sol_route(sol_key):
-	rd = get_redis_client
+	rd = get_redis_client()
 	rd.set(sol_key,rd.get('template_sol'))
 	return str(sol_key) + ' created!\n'
 
@@ -108,7 +108,7 @@ def delete_sol_route(sol):
 	rd = get_redis_client()
 	if not rd.get(sol):
 		return "key does not exist\n"
-	rd.remove(sol)
+	rd.delete(sol)
 	return "key successfully removed\n"
 
 ### JOB ROUTES -------------------------------------------------------------
