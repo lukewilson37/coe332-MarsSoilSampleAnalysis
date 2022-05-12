@@ -62,9 +62,13 @@ def return_sol_data(solname):
 	sol_data_json = json.loads(sol_data_raw)
 	return sol_data_raw
 
-@app.route('/get_sol_list',methods=['GET'])
+@app.route('/set_sol_list',methods=['GET'])
 def get_sol_list():
 	rd = get_redis_client()
+	keys_sol = []
+	for sol_key in rd.keys(pattern="sol*"):
+		keys_sol.append(sol_key.decode('utf-8'))
+	rd.set('keys_sol',json.dumps({'keys_sol':keys_sol}))
 	return "developing\n"	
 
 @app.route('/jobs/results/<id>', methods=['GET'])
@@ -88,6 +92,15 @@ def job_creator(substance):
     """
     #add_job(substance)
     return add_job(substance)
+
+@app.route('/jobs/status/<job_id>',methods=['GET'])
+def check_status_route(job_id):
+	"""
+	application route to check job status
+	arguments: job id (string)
+	returns: status (string)
+	"""
+	return check_status(job_id)
 
 if __name__ == '__main__':
 	app.run(debug=True, host='0.0.0.0')
