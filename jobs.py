@@ -2,11 +2,14 @@ from hotqueue import HotQueue
 import redis
 import uuid
 import json
+import os
+
+redis_ip = os.environ.get('REDIS_IP')
 
 
-q = HotQueue("plot_queue", serializer=None, host='172.17.0.4', port=6379, db=1)
+q = HotQueue("plot_queue", serializer=None, host=redis_ip, port=6379, db=1)
 
-rd = redis.Redis(host="172.17.0.4", port=6379, db=0)
+rd = redis.Redis(host=redis_ip, port=6379, db=0)
 
 
 def generate_jid():

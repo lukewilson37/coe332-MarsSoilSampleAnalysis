@@ -2,7 +2,8 @@ build:
 	docker build -t alecsuggs/mssaapp:1.0.0 .
 
 run:
-	docker run --name "MSSAapp" -p 5033:5000 alecsuggs/mssaapp:1.0.0 /app/app.py
+	RIP=$$(docker inspect mssaredis | grep \"IPAddress\" | head -n1 | awk -F\" '{print $$4}') && \
+	docker run --name "MSSAapp" --env REDIS_IP=$${RIP} -p 5033:5000 alecsuggs/mssaapp:1.0.0 /app/app.py
 
 stop:
 	docker stop "MSSAapp"
@@ -26,7 +27,8 @@ bwrk:
 	docker build -t alecsuggs/mssawrk:1.0.0 .
 
 rwrk:
-	docker run  --name "mssaworker" alecsuggs/mssawrk:1.0.0 /app/worker.py 
+	RIP=$$(docker inspect mssaredis | grep \"IPAddress\" | head -n1 | awk -F\" '{print $$4}') && \
+	docker run  --name "mssaworker" --env REDIS_IP=$${RIP} alecsuggs/mssawrk:1.0.0 /app/worker.py 
 
 rmwrk:
 	docker rm "mssaworker"

@@ -3,8 +3,11 @@ import json
 from jobs import q, update_status
 import redis
 import numpy as np
+import os
 
-rd = redis.Redis(host="172.17.0.4", port=6379, db=0)
+redis_ip = os.environ.get('REDIS_IP')
+
+rd = redis.Redis(host=redis_ip, port=6379, db=0)
 
 
 @q.worker
@@ -31,7 +34,8 @@ def execute_job(jid):
     plt.savefig('concentration.png')
     with open('concentration.png', 'rb') as f:
         img = f.read()
-    rd.hset(f'{jid}_plot', 'image', img)
+    id = jid.decode('utf-8')
+    rd.set(f'{id}_plot', img)
     update_status(jid, 'complete')
 
 

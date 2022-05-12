@@ -3,8 +3,10 @@ from flask import request, send_file
 import requests
 import redis
 import json
-from jobs import add_job, check_status
+from jobs import add_job
+import os
 
+redis_ip = os.environ.get('REDIS_IP')
 
 app = Flask(__name__)
 
@@ -17,7 +19,7 @@ def get_redis_client():
 	Returns:
 	redis client object
 	"""
-    return redis.Redis('172.17.0.4', port=6379, db=0)
+    return redis.Redis(host = redis_ip, port=6379, db=0)
 
 
 @app.route('/', methods=['GET'])
@@ -76,7 +78,6 @@ def job_creator(substance):
     application route to create new job. This route accepts a substance input by the user in the URL
     :param: substance
     """
-    add_job(substance)
     return add_job(substance)
 
 
@@ -90,7 +91,7 @@ def job_results(id):
     rd = get_redis_client()
     path = f'/app/{id}.png'
     with open(path, 'wb') as f:
-        f.write(rd.hget(f'{id}_plot', 'image'))
+        f.write(rd.get(f'{id}_plot'))
     return send_file(path, mimetype='image/png', as_attachment=True)
 
 
