@@ -112,6 +112,26 @@ If we now try to read the sol, we will get a "does not exist" message. the data 
 
 ## JOB OPERATIONS 
 
+Our application also offers the ability to complete jobs. The job we have described involves requesting a specific element,
+and the application returns a histogram of the prectage abundancies of that element across all the smaples.
+To requests such a job, we use
+```bash
+$ curl -X POST <IP_ADDRESS>:<PORT>/jobs/request/<element>
+```
+Notice we are returned a job id. This route submits a job request to the jobs queue, where a background worker script will handle the job.
+We can keep updated with the status of our job with
+```bash
+$ curl <IP_ADDRESS>:<PORT>/jobs/status/<job_id>
+```
+The jobs typically finishes pretty quickly. When we find that our job is completed we can curl for the results.
+Since the results are in the form of a histogram, we must specify a location for out image to be saved. 
+The command thus looks something like:
+```bash
+$ curl -X POST <IP_ADDRESS>:<PORT>/jobs/results/<job_id> -- output <destination>
+```
+This saved the image to our destination. You will find the typical histogram looks like this ![histogram](https://github.com/lukewilson37/coe332-MarsSoilSampleAnalysis/blob/main/test.png)
+
+
 
 
 
