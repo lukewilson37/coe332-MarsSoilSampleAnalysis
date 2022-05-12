@@ -6,7 +6,7 @@ REDIS_PORT = 6437
 FLASK_ADDRESS = '10.108.203.190:5037'
 
 def test_flask_running():
-	responce = requests.get(FLASK_ADDRESS + '/')
+	responce = requests.get('http://' + FLASK_ADDRESS + '/')
 	assert responce.status_code == 200
 
 def test_redis_database():
