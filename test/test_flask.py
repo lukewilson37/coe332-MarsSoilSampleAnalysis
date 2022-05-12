@@ -19,5 +19,12 @@ def test_create_operation():
 	responce = requests.get('http://' + FLASK_ADDRESS + '/read/sol00069 ')
 	assert responce.content != b'key does not exist.\n'
 
+def test_worker_received_queue():
+	rd = redis.StrictRedis(host=REDIS_IP,port=REDIS_PORT)
+	responce = requests.post('http://' + FLASK_ADDRESS + '/jobs/request/Cl ')
+	responce = requests.get('http://' + FLASK_ADDRESS + '/jobs/status/' + json.loads(responce.content.decode('utf-8'))['id'] + ' ')
+	assert responce.content != b'submitted\n'
+
+
 
 
