@@ -58,6 +58,16 @@ $ kubectl apply -f kubernete/prod/
 ```
 Now our application in fully on kubernetes!
 
+## RUNNING THE INTEGRATION TESTS
+
+Running the Integration tests is very simple. The file has already been formated ans thus that is needed to to write
+```bash
+$ pytest
+```
+in the repository from the kubernetes computer.
+The test will verify (1) the flaks app is running, (2) the redis database is operating (3) the CRUD operations work and (4) the worker is receiving and processing job requests.
+This pytest follows typical pytest operations
+
 ## CRUD OPERATIONS
 
 CRUD stands for Create, Read, Update and Delete. Our application offers all of there features!
@@ -111,6 +121,26 @@ $ curl -X POST <IP_ADDRESS>:<PORT>/delete/<sol_key>
 If we now try to read the sol, we will get a "does not exist" message. the data is gone from teh database.
 
 ## JOB OPERATIONS 
+
+Our application also offers the ability to complete jobs. The job we have described involves requesting a specific element,
+and the application returns a histogram of the prectage abundancies of that element across all the smaples.
+To requests such a job, we use
+```bash
+$ curl -X POST <IP_ADDRESS>:<PORT>/jobs/request/<element>
+```
+Notice we are returned a job id. This route submits a job request to the jobs queue, where a background worker script will handle the job.
+We can keep updated with the status of our job with
+```bash
+$ curl <IP_ADDRESS>:<PORT>/jobs/status/<job_id>
+```
+The jobs typically finishes pretty quickly. When we find that our job is completed we can curl for the results.
+Since the results are in the form of a histogram, we must specify a location for out image to be saved. 
+The command thus looks something like:
+```bash
+$ curl -X POST <IP_ADDRESS>:<PORT>/jobs/results/<job_id> --output <destination>
+```
+This saved the image to our destination. You will find the typical histogram looks like this ![histogram](https://github.com/lukewilson37/coe332-MarsSoilSampleAnalysis/blob/main/test.png)
+
 
 
 
