@@ -33,7 +33,7 @@ def execute_job(jid):
     plt.hist(hi, bins=19)
     plt.xlabel("Composition Percentage")
     plt.ylabel("Number of Samples")
-    plt.title(f'{substance} Composition Percentages')
+    plt.title(f'{substance} Composition Percentages Frequencies')
     plt.savefig('concentration.png')
     with open('concentration.png', 'rb') as f:
         img = f.read()
