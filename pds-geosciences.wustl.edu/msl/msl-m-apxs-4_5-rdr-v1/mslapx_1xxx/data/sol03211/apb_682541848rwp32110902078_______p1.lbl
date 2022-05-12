@@ -1,0 +1,123 @@
+PDS_VERSION_ID                    = PDS3
+
+RECORD_TYPE                       = STREAM
+
+FILE_RECORDS                      = 17
+
+/* Pointers to Data Objects */
+^HEADER                           = ("APB_682541848RWP32110902078_______P1.CSV",1)
+^SPREADSHEET                      = ("APB_682541848RWP32110902078_______P1.CSV",2)
+
+/* Identification Data Elements */
+DATA_SET_ID                       = "MSL-M-APXS-4/5-RDR-V1.0"
+PRODUCT_ID                        = "APB_682541848RWP32110902078_______P1"
+PRODUCT_VERSION_ID                = "V1.0"
+PRODUCT_TYPE                      = APXS_RWP
+PRODUCT_CREATION_TIME             = 2022-02-15T16:21:22.832
+RELEASE_ID                        = "0029"
+SOURCE_PRODUCT_ID                 = "APB_682541848ESC32110902078_______M1"
+PRODUCER_FULL_NAME                = "RALF GELLERT"
+PRODUCER_INSTITUTION_NAME         = "UNIVERSITY OF GUELPH"
+
+MISSION_NAME                      = "MARS SCIENCE LABORATORY"
+MISSION_PHASE_NAME                = "EXTENDED SURFACE MISSION"
+INSTRUMENT_HOST_NAME              = "MARS SCIENCE LABORATORY"
+INSTRUMENT_HOST_ID                = MSL
+INSTRUMENT_NAME                   = "ALPHA PARTICLE X-RAY SPECTROMETER"
+INSTRUMENT_ID                     = APXS
+INSTRUMENT_TYPE                   = SPECTROMETER
+
+COMMAND_SEQUENCE_NUMBER          = 5
+MSL:LOCAL_MEAN_SOLAR_TIME        = "Sol-03211M11:01:11.346"
+LOCAL_TRUE_SOLAR_TIME            = "11:15:05"
+OBSERVATION_ID                   = UNK
+PLANET_DAY_NUMBER                = 3211
+MSL:REQUEST_ID                   = "0"
+ROVER_MOTION_COUNTER             = (90,2078,8,24,0,0,80,90,0,0)
+ROVER_MOTION_COUNTER_NAME        = (SITE, DRIVE, POSE, ARM, CHIMRA,
+                                   DRILL, RSM, HGA, DRT, IC)
+SEQUENCE_ID                      = "apxs01010"
+SEQUENCE_VERSION_ID              = "1"
+MSL:ACTIVE_FLIGHT_STRING_ID      = B
+SOLAR_LONGITUDE                  = 87.054
+SPACECRAFT_CLOCK_CNT_PARTITION   = 1
+SPACECRAFT_CLOCK_START_COUNT     = "0682541076.638"
+SPACECRAFT_CLOCK_STOP_COUNT      = "0682541848.403"
+START_TIME                       = 2021-08-18T07:31:36.919
+STOP_TIME                        = 2021-08-18T07:44:27.445
+TARGET_NAME                      = MARS
+TARGET_TYPE                      = PLANET
+
+/* TELEMETRY DATA ELEMENTS */
+
+APPLICATION_PROCESS_ID           = 97
+APPLICATION_PROCESS_NAME         = "ApxsScienceAndEng"
+MSL:VIRTUAL_CHANNEL_ID           = "32"
+MSL:COMMUNICATION_SESSION_ID     = "42110"
+DOWNLOAD_PRIORITY                = 28
+EARTH_RECEIVED_START_TIME        = 2021-08-19T01:05:37.945
+MSL:EXPECTED_TRANSMISSION_PATH   = "3851"
+MSL:AUTO_DELETE_FLAG             = "FALSE"
+MSL:TRANSMISSION_PATH            = "65535"
+FLIGHT_SOFTWARE_VERSION_ID       = "41343824"
+MSL:FLIGHT_SOFTWARE_MODE         = "8"
+MSL:PRODUCT_COMPLETION_STATUS    = COMPLETE_CHECKSUM_PASS
+MSL:PRODUCT_TAG                  = "0"
+MSL:SEQUENCE_EXECUTION_COUNT     = 1
+RECEIVED_PACKETS                 = 0
+SPICE_FILE_NAME                  = "chronos.msl"
+TELEMETRY_PROVIDER_ID            = MPCS_MSL_DP
+MSL:TELEMETRY_SOURCE_CHECKSUM    = 6433
+MSL:TELEMETRY_SOURCE_SIZE        = 29818
+TELEMETRY_SOURCE_NAME       = {"ApxsScienceAndEng_0682541848-40377-4.dat"
+                              ,"ApxsStart_0682541076-63868-2.dat"}
+MSL:TELEMETRY_SOURCE_TYPE        = "DATA PRODUCT"
+MSL:TELEMETRY_SOURCE_HOST_NAME   = mslsmsampcs1
+EXPECTED_PACKETS                 = 0
+
+/* Data Object Definitions */
+
+OBJECT                            = HEADER
+  BYTES                           = UNK
+  RECORDS                         = 1
+  HEADER_TYPE                     = "SPREADSHEET"
+  DESCRIPTION                     = "The first line in the file gives the
+    column headings."
+END_OBJECT                        = HEADER
+
+OBJECT                            = SPREADSHEET
+  FIELDS                          = 3
+  FIELD_DELIMITER                 = COMMA
+  ROW_BYTES                       = 80
+  ROWS                            = 16
+
+  OBJECT                          = FIELD
+    FIELD_NUMBER                  = 1
+    NAME                          = "OXIDE"
+    BYTES                         = 20
+    DATA_TYPE                     = CHARACTER
+    DESCRIPTION                   = "Field 1 gives the name of a standard
+      element oxide."
+  END_OBJECT                      = FIELD
+
+  OBJECT                          = FIELD
+    FIELD_NUMBER                  = 2
+    NAME                          = "WEIGHT PERCENT"
+    BYTES                         = 20
+    DATA_TYPE                     = ASCII_REAL
+    DESCRIPTION                   = "Field 2 gives the computed weight
+      percent of the oxide."
+  END_OBJECT                      = FIELD
+
+  OBJECT                          = FIELD
+    FIELD_NUMBER                  = 3
+    NAME                          = "STANDARD ERROR"
+    BYTES                         = 20
+    DATA_TYPE                     = ASCII_REAL
+    DESCRIPTION                   = "Field 3 gives the standard error from
+      the weight percent calculation."
+  END_OBJECT                      = FIELD
+
+END_OBJECT                        = SPREADSHEET
+
+END

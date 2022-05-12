@@ -1,0 +1,117 @@
+PDS_VERSION_ID                    = PDS3
+
+RECORD_TYPE                       = STREAM
+
+FILE_RECORDS                      = 1025
+
+/* Pointers to Data Objects */
+^HEADER                           = ("APB_532279104RSP15180592242_______P1.CSV",1)
+^SPREADSHEET                      = ("APB_532279104RSP15180592242_______P1.CSV",2)
+
+/* Identification Data Elements */
+DATA_SET_ID                       = "MSL-M-APXS-4/5-RDR-V1.0"
+PRODUCT_ID                        = "APB_532279104RSP15180592242_______P1"
+PRODUCT_VERSION_ID                = "V1.0"
+PRODUCT_TYPE                      = APXS_RSP
+PRODUCT_CREATION_TIME             = 2017-06-24T13:06:57.456
+RELEASE_ID                        = "0015"
+SOURCE_PRODUCT_ID                 = "APB_532279104ESC15180592242_______M1"
+PRODUCER_FULL_NAME                = "RALF GELLERT"
+PRODUCER_INSTITUTION_NAME         = "UNIVERSITY OF GUELPH"
+
+MISSION_NAME                      = "MARS SCIENCE LABORATORY"
+MISSION_PHASE_NAME                = "EXTENDED SURFACE MISSION"
+INSTRUMENT_HOST_NAME              = "MARS SCIENCE LABORATORY"
+INSTRUMENT_HOST_ID                = MSL
+INSTRUMENT_NAME                   = "ALPHA PARTICLE X-RAY SPECTROMETER"
+INSTRUMENT_ID                     = APXS
+INSTRUMENT_TYPE                   = SPECTROMETER
+
+COMMAND_SEQUENCE_NUMBER          = 1
+MSL:LOCAL_MEAN_SOLAR_TIME        = "Sol-01518M19:45:27.554"
+LOCAL_TRUE_SOLAR_TIME            = "19:43:02"
+OBSERVATION_ID                   = UNK
+PLANET_DAY_NUMBER                = 1518
+MSL:REQUEST_ID                   = "0"
+ROVER_MOTION_COUNTER             = (59,2242,20,126,14,0,374,204,0,0)
+ROVER_MOTION_COUNTER_NAME        = (SITE, DRIVE, POSE, ARM, CHIMRA,
+                                   DRILL, RSM, HGA, DRT, IC)
+SEQUENCE_ID                      = "apxs00028"
+SEQUENCE_VERSION_ID              = "0"
+MSL:ACTIVE_FLIGHT_STRING_ID      = B
+SOLAR_LONGITUDE                  = 260.42
+SPACECRAFT_CLOCK_CNT_PARTITION   = 1
+SPACECRAFT_CLOCK_START_COUNT     = "0532274735.515"
+SPACECRAFT_CLOCK_STOP_COUNT      = "0532279104.209"
+START_TIME                       = 2016-11-13T02:28:53.487
+STOP_TIME                        = 2016-11-13T03:41:41.332
+TARGET_NAME                      = MARS
+TARGET_TYPE                      = PLANET
+
+/* TELEMETRY DATA ELEMENTS */
+
+APPLICATION_PROCESS_ID           = 97
+APPLICATION_PROCESS_NAME         = "ApxsScienceAndEng"
+MSL:VIRTUAL_CHANNEL_ID           = "32"
+MSL:COMMUNICATION_SESSION_ID     = "35191"
+DOWNLOAD_PRIORITY                = 28
+EARTH_RECEIVED_START_TIME        = 2016-11-13T11:18:57.863
+MSL:EXPECTED_TRANSMISSION_PATH   = "3851"
+MSL:AUTO_DELETE_FLAG             = "FALSE"
+MSL:TRANSMISSION_PATH            = "65535"
+FLIGHT_SOFTWARE_VERSION_ID       = "208889339"
+MSL:FLIGHT_SOFTWARE_MODE         = "8"
+MSL:PRODUCT_COMPLETION_STATUS    = COMPLETE_CHECKSUM_PASS
+MSL:PRODUCT_TAG                  = "0"
+MSL:SEQUENCE_EXECUTION_COUNT     = 1
+RECEIVED_PACKETS                 = 0
+SPICE_FILE_NAME                  = "chronos.msl"
+TELEMETRY_PROVIDER_ID            = MPCS_MSL_DP
+MSL:TELEMETRY_SOURCE_CHECKSUM    = 447
+MSL:TELEMETRY_SOURCE_SIZE        = 29818
+TELEMETRY_SOURCE_NAME       = {"ApxsScienceAndEng_0532279104-20927-2.dat"
+                              ,"ApxsStart_0532274735-51511-1.dat"}
+MSL:TELEMETRY_SOURCE_TYPE        = "DATA PRODUCT"
+MSL:TELEMETRY_SOURCE_HOST_NAME   = mslsmsampcs1
+EXPECTED_PACKETS                 = 0
+
+/* Data Object Definitions */
+
+OBJECT                            = HEADER
+  BYTES                           = UNK
+  RECORDS                         = 1
+  HEADER_TYPE                     = "SPREADSHEET"
+  DESCRIPTION                     = "The first line in the file contains
+    notes."
+END_OBJECT                        = HEADER
+
+OBJECT                            = SPREADSHEET
+  FIELDS                          = 2
+  FIELD_DELIMITER                 = COMMA
+  ROW_BYTES                       = 80
+  ROWS                            = 1024
+
+  OBJECT                          = FIELD
+    FIELD_NUMBER                  = 1
+    NAME                          = "X-RAY ENERGY"
+    BYTES                         = 10
+    DATA_TYPE                     = ASCII_INTEGER
+    DESCRIPTION                   = "Each record in the file represents an
+      X-ray channel. The first field gives the energy in eV for that
+      channel."
+  END_OBJECT                      = FIELD
+
+  OBJECT                          = FIELD
+    FIELD_NUMBER                  = 2
+    NAME                          = "COUNTS"
+    BYTES                         = 10
+    DATA_TYPE                     = ASCII_INTEGER
+    DESCRIPTION                   = "Each record in the file represents an
+      X-ray channel. The second field in the record gives the counts for
+      that channel, with two exceptions. The value for the first channel is
+      total counting time in seconds. The value for the last channel is the
+      overflow, the counts observed at that energy and higher."
+  END_OBJECT                      = FIELD
+END_OBJECT                        = SPREADSHEET
+
+END

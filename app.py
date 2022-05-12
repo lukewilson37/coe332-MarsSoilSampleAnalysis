@@ -17,7 +17,7 @@ def get_redis_client():
 	Returns:
 	redis client object
 	"""
-    return redis.Redis('172.17.0.5', port=6379, db=0)
+    return redis.Redis('172.17.0.4', port=6379, db=0)
 
 
 @app.route('/', methods=['GET'])
@@ -41,7 +41,7 @@ def data_route():
     if request.method == 'POST':
         rd = get_redis_client()
         sl = requests.get(
-            "https://raw.githubusercontent.com/lukewilson37/coe332-MarsSoilSampleAnalysis/main/initial_sol_list.txt")
+            'https://raw.githubusercontent.com/lukewilson37/coe332-MarsSoilSampleAnalysis/alecbranch/initial_sol_list.txt')
         sl_list = list(sl.content.decode('utf-8').split("\n"))
         sl_list.remove("")
         for sol in sl_list:
@@ -90,7 +90,7 @@ def job_results(id):
     rd = get_redis_client()
     path = f'/app/{id}.png'
     with open(path, 'wb') as f:
-        f.write(rd.hget(str(id), 'image'))
+        f.write(rd.hget(f'{id}_plot', 'image'))
     return send_file(path, mimetype='image/png', as_attachment=True)
 
 

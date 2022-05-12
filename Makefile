@@ -20,7 +20,7 @@ removei:
 	docker rmi alecsuggs/mssaapp:1.0.0
 
 redis:
-	docker run -p 6433:6379 --name=mssaredis redis:6 
+	docker run -d -p 6433:6379 -v $(pwd)/data:/data:rw --name=mssaredis redis:6 --save 1 1
 
 bwrk:
 	docker build -t alecsuggs/mssawrk:1.0.0 .
