@@ -62,7 +62,7 @@ Now our application in fully on kubernetes!
 
 Running the Integration tests is very simple. The file has already been formated ans thus that is needed to to write
 ```bash
-pytest
+$ pytest
 ```
 in the repository from the kubernetes computer.
 The test will verify (1) the flaks app is running, (2) the redis database is operating (3) the CRUD operations work and (4) the worker is receiving and processing job requests.
