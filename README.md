@@ -6,7 +6,7 @@ By Alec Suggs and Luke Wilson
 
 ### INTRO
 
-In 2011 NASA launched its Mars Science Labratory, otherwise know as Curiosity. Curiiosity was to go and study Mars soil and atmosphere.
+In 2011 NASA launched its Mars Science Labratory, otherwise know as Curiosity. Curiosity was to go and study Mars soil and atmosphere.
 One of the Instruments attatched to Curiosity was the Alpha Particle X-Ray Spectrometer ([APXS](https://mars.nasa.gov/msl/spacecraft/instruments/apxs/)). 
 APXS was reponcible for analyzing the amounts of chemical elements in martian soil and rock samples. 
 APSS is attatched to one of Curiosities arm, which would place it very close to a sample for analysis.
